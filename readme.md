@@ -252,3 +252,9 @@ On our page components (so far, Terms and About), instead of importing Container
     <Page title="Terms & Conditions">
 
 And if we needed to use a wide layout, we could add the "wide" property to <Page> here as well.
+
+## Setting Up a Backend
+
+For this course, the instructor has created a backend api for us. I have no idea what this really entails, but all we needed to do was download the 'backend-api' folder from the repo, create a .env file with our connection string, port, and jwtsecret, run an "npm install" command, and voila. Well, and set our database up in order to actually have a connection string that worked.
+
+For this app, I've signed up for a MongoDB account, created a Cluster, and then a new Database (ReactCourse) and Collection (users).
