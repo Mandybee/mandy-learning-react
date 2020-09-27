@@ -122,6 +122,16 @@ Then we can include them in our Main() function like:
     <HomeGuest />
     <Footer />
 
+### Creating a Snippet in Visual Studio Code
+
+Code > Preferences > User Snippets
+
+Type in "React" to find 'javascriptreact' and it'll create a JSON file to edit.
+
+From the repo, I grabbed some code to paste in there to create a new [React component snippet](https://github.com/LearnWebCode/react-course/blob/master/vscode-react-component.txt).
+
+You can easily create your own snippets using this app: [snippet generator](https://snippet-generator.app) It can generate Visual Studio Code, Sublime Text, and Atom snippets!
+
 ## Routing / Client-side Rendering
 
 Okay, I thought this was totally neato. (Yep, we're back in the 90's.) I remember a developer I worked with many years ago set up a site that did this -- one HTML page, many URLs, different content. It seemed like total magic. Honestly, it still does, but I don't necessarily have to know how to write all of this stuff from scratch in order to use it, right??
@@ -180,7 +190,65 @@ At the top of our Footer.js, we included:
 
 We did similar stuff to our Header.js, with its one link.
 
+#### Updating Page Titles
+
+Very simply, you could add the following in your component's function:
+
+    useEffect(() => {
+        document.title = "Terms & Conditions | ComplexApp";
+        window.scrollTo(0, 0);
+    }, []);
+
+And add ", {useEffect}" into the "import React..." line at the top.
+
+BUT! This creates a function that we'd just be repeating over and over again on every page we create, so it's not the best way to do it...
+
+See "Composition" section for the better way to do this.
+
 ## JSX Syntax Changes from HTML
 
 - The "class" attribute is replaced with "className".
 - The "for" attribute is replace with "htmlFor".
+
+## Reusable and flexible containers
+
+We created a Container.js file to hold the following code:
+
+    import React, { useEffect } from "react";
+
+    function Container(props) {
+        return (
+            <>
+                <div className={"container py-md-5 " + (props.wide ? "" : "container--narrow")}>{props.children}</div>
+            </>
+        );
+    }
+
+    export default Container;
+
+We use the "props" variable to pass through variables from our components where <Container> is used. Most of our pages will use the "container--narrow" class for the containing div, so we've added the conditional to our Container.js to show "container--narrow" unless the "wide" property is set to true.
+
+On our HomeGuest.js, we've added "wide={true}" to the Container tag. Voila!
+
+## Composition
+
+Because many pages have similar content (such as needing to set the page title), we'll create a new component (Page.js), that we'll use in our page components. This will import the "Container" and create a new Page component that we can leverage.
+
+    import React, { useEffect } from "react";
+    import Container from "./Container";
+
+    function Page(props) {
+        useEffect(() => {
+            document.title = `${props.title} | ComplexApp`;
+            window.scrollTo(0, 0);
+        }, []);
+        return <Container wide={props.wide}>{props.children}</Container>;
+    }
+
+    export default Page;
+
+On our page components (so far, Terms and About), instead of importing Container, we'll import Page, and instead of using the <Container> component, we'll use <Page>.
+
+    <Page title="Terms & Conditions">
+
+And if we needed to use a wide layout, we could add the "wide" property to <Page> here as well.
