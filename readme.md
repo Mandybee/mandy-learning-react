@@ -258,3 +258,25 @@ And if we needed to use a wide layout, we could add the "wide" property to <Page
 For this course, the instructor has created a backend api for us. I have no idea what this really entails, but all we needed to do was download the 'backend-api' folder from the repo, create a .env file with our connection string, port, and jwtsecret, run an "npm install" command, and voila. Well, and set our database up in order to actually have a connection string that worked.
 
 For this app, I've signed up for a MongoDB account, created a Cluster, and then a new Database (ReactCourse) and Collection (users).
+
+## Creating Our Sign Up Form
+
+In HomeGuest.js, we have the html for a signup form that needs to actually do something. In Lesson 26, we install Axios to deal with our form request (instead of using the Fetch API -- noted as the instructor's preference and no further information about the differences given. I found [an article that explains this](https://www.geeksforgeeks.org/difference-between-fetch-and-axios-js-for-making-http-requests/) though!)
+
+In our HomeGuest.js, we import Axios at the top of our document:
+
+    import Axios from "axios";
+
+And within our HomeGuest() function, we add this async function to handle the submission.
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        try {
+            await Axios.post("http://localhost:8080/register", { username: "Test", email: "test@test.com", password: "superlongpassword123" });
+            console.log("User was successfully created");
+        } catch (e) {
+            console.log("There was an error submitting the form.");
+        }
+    }
+
+To our <form> element, we add "onSubmit={handleSubmit}" to tell it to run the handleSubmit() function.
