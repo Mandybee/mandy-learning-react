@@ -14,7 +14,6 @@ function HomeGuest() {
       console.log("User was successfully created");
     } catch (e) {
       console.log("There was an error submitting the form.");
-      console.log(username, email, password);
     }
   }
   return (
