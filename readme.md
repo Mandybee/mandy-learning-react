@@ -280,3 +280,25 @@ And within our HomeGuest() function, we add this async function to handle the su
     }
 
 To our <form> element, we add "onSubmit={handleSubmit}" to tell it to run the handleSubmit() function.
+
+In Lesson 27, we get to the React part of dealing with a form (the above is all regular JS stuff).
+
+First, we create three pieces of "state". We need to import {useState} into our file in order to use... state. :)
+
+    import React, {useState} from "react";
+
+Then within our HomeGuest() function, we'll set up our variables that will "use state". The useState() function returns an array with two items: current value and a function we can call to update the value.
+
+    const [username, setUsername] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+To listen for a change, we add the following to our <input> fields:
+
+    onChange={e => setUsername(e.target.value)}
+
+This updates the username (and other vars) whenever the fields are changed, so when you hit submit, they're ready for you!
+
+We updated the post object to contain the variables we made, and tah-dah! This goes to our MongoDB.
+
+    await Axios.post("http://localhost:8080/register", { username, email, password });
