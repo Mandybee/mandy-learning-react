@@ -331,3 +331,27 @@ As with our signup form, we add onChange properties to each input in our form, a
     }
 
 Again, we didn't build our backend, so I have no idea what "/login" is doing, but it looks like it's checking our database for a username, then whether the password works!
+
+## Changing the Login Area Once Logged In
+
+We create a HeaderLoggedIn.js file to show the username, an icon, and a log out button.
+
+Within our Header.js, we add a condition to show HeaderLoggedIn or HeaderLoggedOut depending on the state of "loggedIn".
+
+    const [loggedIn, setLoggedIn] = useState();
+
+    {loggedIn ? <HeaderLoggedIn setLoggedIn={setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={setLoggedIn} />}
+
+In our HeaderLoggedIn.js and HeaderLoggedOut.js, we need to make sure the main function has "props" passed to it.
+
+    function HeaderLoggedOut(props) { }
+
+In our login form, if the response returns data, we update the LoggedIn state using the setLoggedIn function to true.
+
+    props.setLoggedIn(true);
+
+In our user data (HeaderLoggedIn.js), we add a function to the Sign Out button to change our LoggedIn state to false.
+
+    onClick={() => props.setLoggedIn(false)}
+
+I have to say, all of this inline code has me screaming. lol My philosophy has always been html, css, and js should all be separate! But perhaps that's an archaic way to look at things and I should get with the times. :D
