@@ -302,3 +302,32 @@ This updates the username (and other vars) whenever the fields are changed, so w
 We updated the post object to contain the variables we made, and tah-dah! This goes to our MongoDB.
 
     await Axios.post("http://localhost:8080/register", { username, email, password });
+
+## Logging In
+
+We are moving the login <form> into another component named HeaderLoggedOut.js. Again, to import a component into another component (like the HeaderLoggedOut component into the Header component), we need to import it at the top of the component, like so...
+
+    import HeaderLoggedOut from "./HeaderLoggedOut";
+
+And we need to call it within our return, like so...
+
+    <HeaderLoggedOut />
+
+As with our signup form, we add onChange properties to each input in our form, and create a function that runs when the form is submitted (using the onSubmit property on the <form> tag).
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        try {
+            const response = await Axios.post("http://localhost:8080/login", { username, password });
+
+            if (response.data) {
+                console.log(response.data);
+            } else {
+                console.log("Incorrect username/password");
+            }
+        } catch (e) {
+        console.log("There was an error logging in.");
+        }
+    }
+
+Again, we didn't build our backend, so I have no idea what "/login" is doing, but it looks like it's checking our database for a username, then whether the password works!
