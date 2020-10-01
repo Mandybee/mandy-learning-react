@@ -447,3 +447,31 @@ And we create an asynchronous function for handling our form submission:
     }
 
 We pass the token through to the backend because that's what proves that we're us! (Which makes me wonder... is localStorage the best way to pass something like that? I could create that key/value in my browser and just pretend I was someone logged in... assuming I could find that token in the first place, I guess.)
+
+### Redirecting to new page on submit
+
+We can use withRouter to have React redirect us to a new page url.
+
+    import { withRouter } from "react-router-dom";
+
+And change:
+
+    export default CreatePost;
+
+to:
+
+    export default withRouter(CreatePost);
+
+This gives properties to CreatePost() that we can pass in.
+
+In our handleSubmit() function, we can add this to redirect us to a specific url after our post has been submitted:
+
+    props.history.push("/post/2343"); // This is just hard-coded for now to see how this redirect works.
+
+Every time we send a post to MongoDB, it sends back an ID in the Axios response. To leverage this, we will save our Axios.post as a variable (a const to be specific).
+
+    const response = await Axios.post("/create-post", { title, body, token: localStorage.getItem("complexappToken") });
+
+And use that response in our redirect:
+
+    props.history.push(`/post/${response.data}`);
