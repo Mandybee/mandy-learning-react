@@ -391,3 +391,25 @@ And have our Sign Out button run it onClick.
     <button onClick={handleLogout} className="btn btn-sm btn-secondary">
         Sign Out
     </button>
+
+## Lifting States Up
+
+We have set up our loggedIn state within our Header.js, so if we want to show something in our content area based on whether or not we are logged in, we can't, so we need to "lift up" the loggedIn state to our Main.js.
+
+So, we moved this from Header.js to Main.js (making sure to import {useState} in Main.js):
+
+      const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem("complexappToken")));
+
+Our <Header /> now needs to be passed in that state, so we update it to:
+
+    <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+
+And in our Header.js, we needed to update two lines. First, we need to pass props into our component function.Then we need to update any references to loggedIn or setLoggedIn so that they are methods/properties of props.
+
+    {props.loggedIn ? <HeaderLoggedIn setLoggedIn={props.setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={props.setLoggedIn} />}
+
+And then to actually change our content area, we replace <HomeGuest /> in Main.js with a conditional:
+
+    {loggedIn ? <Home /> : <HomeGuest />}
+
+_The instructor has mentioned that passing down states into components, possibly many layers deep, is clunky. There are state management libraries (like Redux) that developers can use to get around this, but apparently there are now some built-in tools that we'll learn about later._
