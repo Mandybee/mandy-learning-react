@@ -14,9 +14,11 @@ I'm using Visual Studio Code to build this. It has built-in support for JSX, woo
 
 To make my life easier, the instructor suggests adding this to the settings.json for VSC to make all js files open using the "javascript react" formatting:
 
-    "files.associations": {
-        "*.js": "javascriptreact"
-    }
+```json
+"files.associations": {
+    "*.js": "javascriptreact"
+}
+```
 
 ### Node.js, NPM
 
@@ -48,7 +50,9 @@ And last but not least...
 
 Add a command to the package.json in "scripts" to set up our server:
 
-    "dev": "webpack-dev-server"
+```json
+"dev": "webpack-dev-server"
+```
 
 To run our task:
 
@@ -58,9 +62,13 @@ Our site is now available at: [localhost:3000](http://localhost:3000) And it'll 
 
 To have our browser only load JS changes (rather than refreshing page), add this to the end of our site's JS:
 
+```javascript
 if (module.hot) {
-module.hot.accept();
+  module.hot.accept();
 }
+```
+
+
 
 ### Create HTML, CSS, and main JS Files
 
@@ -76,22 +84,28 @@ To include our Javascript, we link to "/bundled.js", which is hidden in our loca
 
 Our Main.js file needs to start with the following:
 
-    import React from "react";
-    import ReactDOM from "react-dom";
+```javascript
+import React from "react";
+import ReactDOM from "react-dom";
+```
 
 Then we'll create a function for our main HTML output:
 
-    function Main() {
-        return (
-            <>
-                <h1>This is my site!</h1>
-            </>
-        );
-    }
+```jsx
+function Main() {
+    return (
+        <>
+            <h1>This is my site!</h1>
+        </>
+    );
+}
+```
 
 And render that onto the page with:
 
-    ReactDOM.render(<Main />, document.querySelector("#app"));
+```javascript
+ReactDOM.render(<Main />, document.querySelector("#app"));
+```
 
 Woot! All done. lol Okay... just kidding.
 
@@ -101,28 +115,36 @@ Instead of jamming all of our code into one file, we need to separate our JS int
 
 Each new component JS file needs to start with:
 
-    import React from "react";
+```javascript
+import React from "react";
+```
 
 Then contains the function with all of that component's JS. And then it should end with:
 
-    export default functionName;
+```javascript
+export default functionName;
+```
 
 Back in our Main.js, we have to import our components to use them:
 
-    // Components
-    import Header from "./components/Header";
-    import HomeGuest from "./components/HomeGuest";
-    import Footer from "./components/Footer";
-    import About from "./components/About";
-    import Terms from "./components/Terms";
+```javascript
+// Components
+import Header from "./components/Header";
+import HomeGuest from "./components/HomeGuest";
+import Footer from "./components/Footer";
+import About from "./components/About";
+import Terms from "./components/Terms";
+```
 
 Then we can include them in our Main() function like:
 
-    <Header />
-    <HomeGuest />
-    <Footer />
+```jsx
+<Header />
+<HomeGuest />
+<Footer />
+```
 
-### Creating a Snippet in Visual Studio Code
+## Creating a Snippet in Visual Studio Code
 
 Code > Preferences > User Snippets
 
@@ -144,29 +166,33 @@ So, first, we'll need react-router-dom.
 
 After importing React and ReactDOM, import these:
 
-    import { BrowserRouter, Switch, Route } from "react-router-dom";
+```javascript
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+```
 
 In Main()'s return, we're going to overhaul our JSX.
 
-    function Main() {
-        return (
-            <BrowserRouter>
-            <Header />
-            <Switch>
-                <Route path="/" exact>
-                    <HomeGuest />
-                </Route>
-                <Route path="/about-us" exact>
-                    <About />
-                </Route>
-                <Route path="/terms" exact>
-                    <Terms />
-                </Route>
-            </Switch>
-            <Footer />
-            </BrowserRouter>
-        );
-    }
+```jsx
+function Main() {
+    return (
+        <BrowserRouter>
+        <Header />
+        <Switch>
+            <Route path="/" exact>
+                <HomeGuest />
+            </Route>
+            <Route path="/about-us" exact>
+                <About />
+            </Route>
+            <Route path="/terms" exact>
+                <Terms />
+            </Route>
+        </Switch>
+        <Footer />
+        </BrowserRouter>
+    );
+}
+```
 
 <BrowserRouter> wraps around our whole layout.
 
@@ -176,9 +202,11 @@ The <Switch> element handles routing for a section.
 
 Each <Route> within a <Switch> is a new 'page' that will be served up based on the URL in the browser window (or links selected within the app). Between the <Route> tags, we can include content to show on the page.
 
-\*This was already in the webpack config code taken from GitHub, but I think it's important to note that this line in the webpack.config.js makes sure that we can, in fact, visit "localhost:3000/about-us" and have it work. It forces the browser to head to index.html rather than trying to find the index file in an "about-us" folder.
+*This was already in the webpack config code taken from GitHub, but I think it's important to note that this line in the webpack.config.js makes sure that we can, in fact, visit "localhost:3000/about-us" and have it work. It forces the browser to head to index.html rather than trying to find the index file in an "about-us" folder.*
 
-    historyApiFallback: { index: "index.html" }
+```javascript
+historyApiFallback: { index: "index.html" }
+```
 
 ### Changing Links
 
@@ -186,7 +214,9 @@ In our Footer.js, we had some links written in regular old HTML. To set up routi
 
 At the top of our Footer.js, we included:
 
-    import { Link } from "react-router-dom";
+```javascript
+import { Link } from "react-router-dom";
+```
 
 We did similar stuff to our Header.js, with its one link.
 
@@ -194,10 +224,12 @@ We did similar stuff to our Header.js, with its one link.
 
 Very simply, you could add the following in your component's function:
 
-    useEffect(() => {
-        document.title = "Terms & Conditions | ComplexApp";
-        window.scrollTo(0, 0);
-    }, []);
+```javascript
+useEffect(() => {
+    document.title = "Terms & Conditions | ComplexApp";
+    window.scrollTo(0, 0);
+}, []);
+```
 
 And add ", {useEffect}" into the "import React..." line at the top.
 
@@ -214,17 +246,19 @@ See "Composition" section for the better way to do this.
 
 We created a Container.js file to hold the following code:
 
-    import React, { useEffect } from "react";
+```jsx
+import React, { useEffect } from "react";
 
-    function Container(props) {
-        return (
-            <>
-                <div className={"container py-md-5 " + (props.wide ? "" : "container--narrow")}>{props.children}</div>
-            </>
-        );
-    }
+function Container(props) {
+    return (
+        <>
+            <div className={"container py-md-5 " + (props.wide ? "" : "container--narrow")}>{props.children}</div>
+        </>
+    );
+}
 
-    export default Container;
+export default Container;
+```
 
 We use the "props" variable to pass through variables from our components where <Container> is used. Most of our pages will use the "container--narrow" class for the containing div, so we've added the conditional to our Container.js to show "container--narrow" unless the "wide" property is set to true.
 
@@ -234,22 +268,26 @@ On our HomeGuest.js, we've added "wide={true}" to the Container tag. Voila!
 
 Because many pages have similar content (such as needing to set the page title), we'll create a new component (Page.js), that we'll use in our page components. This will import the "Container" and create a new Page component that we can leverage.
 
-    import React, { useEffect } from "react";
-    import Container from "./Container";
+```jsx
+import React, { useEffect } from "react";
+import Container from "./Container";
 
-    function Page(props) {
-        useEffect(() => {
-            document.title = `${props.title} | ComplexApp`;
-            window.scrollTo(0, 0);
-        }, []);
-        return <Container wide={props.wide}>{props.children}</Container>;
-    }
+function Page(props) {
+    useEffect(() => {
+        document.title = `${props.title} | ComplexApp`;
+        window.scrollTo(0, 0);
+    }, []);
+    return <Container wide={props.wide}>{props.children}</Container>;
+}
 
-    export default Page;
+export default Page;
+```
 
 On our page components (so far, Terms and About), instead of importing Container, we'll import Page, and instead of using the <Container> component, we'll use <Page>.
 
-    <Page title="Terms & Conditions">
+```jsx
+<Page title="Terms & Conditions">
+```
 
 And if we needed to use a wide layout, we could add the "wide" property to <Page> here as well.
 
@@ -265,19 +303,23 @@ In HomeGuest.js, we have the html for a signup form that needs to actually do so
 
 In our HomeGuest.js, we import Axios at the top of our document:
 
-    import Axios from "axios";
+```javascript
+import Axios from "axios";
+```
 
 And within our HomeGuest() function, we add this async function to handle the submission.
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        try {
-            await Axios.post("http://localhost:8080/register", { username: "Test", email: "test@test.com", password: "superlongpassword123" });
-            console.log("User was successfully created");
-        } catch (e) {
-            console.log("There was an error submitting the form.");
-        }
+```javascript
+async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+        await Axios.post("http://localhost:8080/register", { username: "Test", email: "test@test.com", password: "superlongpassword123" });
+        console.log("User was successfully created");
+    } catch (e) {
+        console.log("There was an error submitting the form.");
     }
+}
+```
 
 To our <form> element, we add "onSubmit={handleSubmit}" to tell it to run the handleSubmit() function.
 
@@ -285,50 +327,64 @@ In Lesson 27, we get to the React part of dealing with a form (the above is all 
 
 First, we create three pieces of "state". We need to import {useState} into our file in order to use... state. :)
 
-    import React, {useState} from "react";
+```javascript
+import React, {useState} from "react";
+```
 
 Then within our HomeGuest() function, we'll set up our variables that will "use state". The useState() function returns an array with two items: current value and a function we can call to update the value.
 
-    const [username, setUsername] = useState();
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+```javascript
+const [username, setUsername] = useState();
+const [email, setEmail] = useState();
+const [password, setPassword] = useState();
+```
 
 To listen for a change, we add the following to our <input> fields:
 
-    onChange={e => setUsername(e.target.value)}
+```javascript
+onChange={e => setUsername(e.target.value)}
+```
 
 This updates the username (and other vars) whenever the fields are changed, so when you hit submit, they're ready for you!
 
 We updated the post object to contain the variables we made, and tah-dah! This goes to our MongoDB.
 
-    await Axios.post("http://localhost:8080/register", { username, email, password });
+```javascript
+await Axios.post("http://localhost:8080/register", { username, email, password });
+```
 
 ## Logging In
 
 We are moving the login <form> into another component named HeaderLoggedOut.js. Again, to import a component into another component (like the HeaderLoggedOut component into the Header component), we need to import it at the top of the component, like so...
 
-    import HeaderLoggedOut from "./HeaderLoggedOut";
+```javascript
+import HeaderLoggedOut from "./HeaderLoggedOut";
+```
 
 And we need to call it within our return, like so...
 
-    <HeaderLoggedOut />
+```jsx
+<HeaderLoggedOut />
+```
 
 As with our signup form, we add onChange properties to each input in our form, and create a function that runs when the form is submitted (using the onSubmit property on the <form> tag).
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        try {
-            const response = await Axios.post("http://localhost:8080/login", { username, password });
+```javascript
+async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+        const response = await Axios.post("http://localhost:8080/login", { username, password });
 
-            if (response.data) {
-                console.log(response.data);
-            } else {
-                console.log("Incorrect username/password");
-            }
-        } catch (e) {
-        console.log("There was an error logging in.");
+        if (response.data) {
+            console.log(response.data);
+        } else {
+            console.log("Incorrect username/password");
         }
+    } catch (e) {
+    console.log("There was an error logging in.");
     }
+}
+```
 
 Again, we didn't build our backend, so I have no idea what "/login" is doing, but it looks like it's checking our database for a username, then whether the password works!
 
@@ -338,9 +394,11 @@ We create a HeaderLoggedIn.js file to show the username, an icon, and a log out 
 
 Within our Header.js, we add a condition to show HeaderLoggedIn or HeaderLoggedOut depending on the state of "loggedIn".
 
-    const [loggedIn, setLoggedIn] = useState();
+```jsx
+const [loggedIn, setLoggedIn] = useState();
 
-    {loggedIn ? <HeaderLoggedIn setLoggedIn={setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={setLoggedIn} />}
+{loggedIn ? <HeaderLoggedIn setLoggedIn={setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={setLoggedIn} />}
+```
 
 In our HeaderLoggedIn.js and HeaderLoggedOut.js, we need to make sure the main function has "props" passed to it.
 
@@ -418,12 +476,16 @@ _The instructor has mentioned that passing down states into components, possibly
 
 So that we don't need to include "http://localhost:8080" at the beginning of every Axios request, we can set a property called baseURL in our Main.js:
 
-    import Axios from "axios";
-    Axios.defaults.baseURL = "http://localhost:8080";
+```javascript
+import Axios from "axios";
+Axios.defaults.baseURL = "http://localhost:8080";
+```
 
 Then all Axios requests can look something like:
 
-    await Axios.post("/login", { username, password });
+```javascript
+await Axios.post("/login", { username, password });
+```
 
 ## Creating a New Post
 
@@ -475,3 +537,44 @@ Every time we send a post to MongoDB, it sends back an ID in the Axios response.
 And use that response in our redirect:
 
     props.history.push(`/post/${response.data}`);
+
+## Adding "Flash" Messages
+
+We want to create an alert that displays at the top of the page when the user successfully creates a post. Because this is something we'd want to use throughout the site, we'll include the code for this in our Main.js so that it can be used in multiple components.
+
+So we create a new component, FlashMessages.js. We import it into Main.js. In Main.js, we add a new state:
+
+```jsx
+const [flashMessages, setFlashMessages] = useState([]);
+
+<FlashMessages messages={flashMessages} />
+```
+
+To add a new message to our FlashMessages component, we create a function in Main.js that adds a new message to the end of the previous array.
+
+```javascript
+function addFlashMessage(msg) {
+    setFlashMessages(prev => prev.concat(msg));
+}
+```
+
+To use this function from within CreatePost, we can pass it as a property. In our JSX, this looks like:
+
+```jsx
+<CreatePost *addFlashMessage*={addFlashMessage} />
+```
+
+And in our CreatePost.js, we add this in our handleSubmit() function:
+
+```javascript
+props.addFlashMessage("Post successfully created!");
+```
+
+But, we'll probably want to use this message in many components. And this is where "context" will come in.
+
+## Context
+
+"An elegant way to pass/share data". Oooh, aaah.
+
+
+
