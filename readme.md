@@ -355,3 +355,39 @@ In our user data (HeaderLoggedIn.js), we add a function to the Sign Out button t
     onClick={() => props.setLoggedIn(false)}
 
 I have to say, all of this inline code has me screaming. lol My philosophy has always been html, css, and js should all be separate! But perhaps that's an archaic way to look at things and I should get with the times. :D
+
+## Persisting State
+
+We'll be storing our login into local storage so that when we refresh the page, our logged in state is persistent.
+
+To store data, we use this:
+localStorage.setItem("nameOfData", dataToBeStored)
+
+In our HeaderLoggedOut.js, we stored these pieces:
+
+    localStorage.setItem("complexappToken", response.data.token);
+    localStorage.setItem("complexappUsername", response.data.username);
+    localStorage.setItem("complexappAvatar", response.data.avatar);
+
+We can use Developer Tools to view this stored info. In Chrome, go to the Application tab and find Local Storage in the left sidebar.
+
+In _Header.js_, we pass the following into useState for _loggedIn_.
+
+    Boolean(localStorage.getItem("complexappToken"));
+
+This checks to see if "complexappToken" is set in Local Storage and returns true if it does, setting loggedIn to true.
+
+To remove items from local storage, we create this function in HeaderLoggedIn.js:
+
+    function handleLogout() {
+        props.setLoggedIn(false);
+        localStorage.removeItem("complexappToken");
+        localStorage.removeItem("complexappUsername");
+        localStorage.removeItem("complexappAvatar");
+    }
+
+And have our Sign Out button run it onClick.
+
+    <button onClick={handleLogout} className="btn btn-sm btn-secondary">
+        Sign Out
+    </button>
