@@ -413,3 +413,37 @@ And then to actually change our content area, we replace <HomeGuest /> in Main.j
     {loggedIn ? <Home /> : <HomeGuest />}
 
 _The instructor has mentioned that passing down states into components, possibly many layers deep, is clunky. There are state management libraries (like Redux) that developers can use to get around this, but apparently there are now some built-in tools that we'll learn about later._
+
+## Setting Axios baseURL
+
+So that we don't need to include "http://localhost:8080" at the beginning of every Axios request, we can set a property called baseURL in our Main.js:
+
+    import Axios from "axios";
+    Axios.defaults.baseURL = "http://localhost:8080";
+
+Then all Axios requests can look something like:
+
+    await Axios.post("/login", { username, password });
+
+## Creating a New Post
+
+In our next lesson, we create a new component for creating a post (CreatePost.js). We set this up like we've set up other components, linked to it from our HeaderLoggedIn component, and set up the route for it in Main.js.
+
+Our form has two fields, so we create two pieces of state (I hope that's the correct way to name them...).
+
+    const [title, setTitle] = useState();
+    const [body, setBody] = useState();
+
+And we create an asynchronous function for handling our form submission:
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        try {
+        await Axios.post("/create-post", { title, body, token: localStorage.getItem("complexappToken") });
+        console.log("New post was created.");
+        } catch (e) {
+        console.log("There was a problem.");
+        }
+    }
+
+We pass the token through to the backend because that's what proves that we're us! (Which makes me wonder... is localStorage the best way to pass something like that? I could create that key/value in my browser and just pretend I was someone logged in... assuming I could find that token in the first place, I guess.)
