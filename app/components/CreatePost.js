@@ -7,13 +7,13 @@ import ExampleContext from "../ExampleContext";
 function CreatePost(props) {
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
-  const addFlashMessage = useContext(ExampleContext);
+  const { addFlashMessage } = useContext(ExampleContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       const response = await Axios.post("/create-post", { title, body, token: localStorage.getItem("complexappToken") });
-      addFlashMessage("Post successfully created!!");
+      addFlashMessage("Post successfully created!");
       props.history.push(`/post/${response.data}`);
     } catch (e) {
       console.log("There was a problem.");

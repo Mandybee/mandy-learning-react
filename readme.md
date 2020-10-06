@@ -576,23 +576,29 @@ But, we'll probably want to use this message in many components. And this is whe
 
 ## Context
 
-"An elegant way to pass/share data". Oooh, aaah.
+"An elegant way to pass/share data". Oooh, aaah. 
 
-We create ExampleContext.js outside of the components folder.
+This lesson was really difficult for me to wrap my head around (maybe because we only create something called an "ExampleContext"???), but I think I'm understanding a little better once I finally got through it all. Instead of passing states through our Main.js down to different components, we can use Contexts to pass around states instead. This is especially helpful when you have nested components, like  HeaderLoggedIn.js and HeaderLoggedOut.js within Header.js.
 
-    import { createContext } from "react";
-    
-    const ExampleContext = createContext();
-    
-    export default ExampleContext;
+To create a Context, first we need to create a new file. We create ExampleContext.js outside of the components folder.
 
-In Main.js, we import this new context file. Within the return for Main.js, we add the Context Provider (following tag) around our <BrowserRouter>
+```jsx
+import { createContext } from "react";
 
-    <ExampleContext.Provider value={addFlashMessage}></ExampleContext.Provider>
+const ExampleContext = createContext();
 
-The opening tag can contain a value property and any child component can access the value, no matter how many layers deep. We should remove "_addFlashMessage_={addFlashMessage}" from the <CreatePost> component.
+export default ExampleContext;
+```
 
-To leverage the value we added to the context, we need to import our ExampleContext into our CreatePost.js.
+In Main.js, we import this new context file. Within the return for Main.js, we add the Context Provider (following tag) around our <BrowserRouter>:
+
+```jsx
+<ExampleContext.Provider value={addFlashMessage}></ExampleContext.Provider>
+```
+
+The opening tag can contain a value property and any child component can access the value, no matter how many layers deep. We can remove "addFlashMessage={addFlashMessage}" from the <CreatePost> component.
+
+To leverage the value we added to the Context, we need to import our ExampleContext into our CreatePost.js.
 
 ```javascript
 import ExampleContext from "../ExampleContext";
@@ -605,3 +611,25 @@ const addFlashMessage = useContext(ExampleContext);
 ```
 
 And within our handleSubmit, we can remove "props" from props.addFlashMessage().
+
+We can also pass setLoggedIn through our Context. You can pass multiple values through a Context:
+
+```jsx
+<ExampleContext.Provider value={{addFlashMessage, setLoggedIn}}>
+```
+
+In CreatePost.js, we have to update our addFlashMessage to the following (with {curly braces}), so that we can destructure the object that ExampleContext is returning.
+
+```javascript
+const { addFlashMessage } = useContext(ExampleContext);
+```
+
+And within Header.js, where we were originally passing setLoggedIn to HeaderLoggedIn and HeaderLoggedOut, we can remove those values. In HeaderLoggedIn.js and HeaderLoggedOut.js, we'll need to import useConText, the Example Context, and create a const variable with the context.
+
+```jsx
+import React, { useEffect, useContext } from "react";
+import ExampleContext from "../ExampleContext";
+
+const { setLoggedIn } = useContext(ExampleContext);
+```
+
