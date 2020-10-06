@@ -14,6 +14,7 @@ import Terms from "./components/Terms";
 import CreatePost from "./components/CreatePost";
 import ViewSinglePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
+import ExampleContext from "./ExampleContext";
 
 function Main() {
   const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem("complexappToken")));
@@ -24,28 +25,30 @@ function Main() {
   }
 
   return (
-    <BrowserRouter>
-      <FlashMessages messages={flashMessages} />
-      <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-      <Switch>
-        <Route path="/" exact>
-          {loggedIn ? <Home /> : <HomeGuest />}
-        </Route>
-        <Route path="/create-post" exact>
-          <CreatePost addFlashMessage={addFlashMessage} />
-        </Route>
-        <Route path="/post/:id">
-          <ViewSinglePost />
-        </Route>
-        <Route path="/about-us" exact>
-          <About />
-        </Route>
-        <Route path="/terms" exact>
-          <Terms />
-        </Route>
-      </Switch>
-      <Footer />
-    </BrowserRouter>
+    <ExampleContext.Provider value={addFlashMessage}>
+      <BrowserRouter>
+        <FlashMessages messages={flashMessages} />
+        <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+        <Switch>
+          <Route path="/" exact>
+            {loggedIn ? <Home /> : <HomeGuest />}
+          </Route>
+          <Route path="/create-post">
+            <CreatePost />
+          </Route>
+          <Route path="/post/:id">
+            <ViewSinglePost />
+          </Route>
+          <Route path="/about-us" exact>
+            <About />
+          </Route>
+          <Route path="/terms" exact>
+            <Terms />
+          </Route>
+        </Switch>
+        <Footer />
+      </BrowserRouter>
+    </ExampleContext.Provider>
   );
 }
 

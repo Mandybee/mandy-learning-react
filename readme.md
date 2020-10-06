@@ -68,8 +68,6 @@ if (module.hot) {
 }
 ```
 
-
-
 ### Create HTML, CSS, and main JS Files
 
 Once React is installed and we have all of our packages, we can get started! The first thing the instructor tells us to do is create an "app" folder. In this folder, we'll put all of our site files (aside from the config stuff we created).
@@ -93,11 +91,11 @@ Then we'll create a function for our main HTML output:
 
 ```jsx
 function Main() {
-    return (
-        <>
-            <h1>This is my site!</h1>
-        </>
-    );
+  return (
+    <>
+      <h1>This is my site!</h1>
+    </>
+  );
 }
 ```
 
@@ -174,23 +172,23 @@ In Main()'s return, we're going to overhaul our JSX.
 
 ```jsx
 function Main() {
-    return (
-        <BrowserRouter>
-        <Header />
-        <Switch>
-            <Route path="/" exact>
-                <HomeGuest />
-            </Route>
-            <Route path="/about-us" exact>
-                <About />
-            </Route>
-            <Route path="/terms" exact>
-                <Terms />
-            </Route>
-        </Switch>
-        <Footer />
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Header />
+      <Switch>
+        <Route path="/" exact>
+          <HomeGuest />
+        </Route>
+        <Route path="/about-us" exact>
+          <About />
+        </Route>
+        <Route path="/terms" exact>
+          <Terms />
+        </Route>
+      </Switch>
+      <Footer />
+    </BrowserRouter>
+  );
 }
 ```
 
@@ -202,10 +200,12 @@ The <Switch> element handles routing for a section.
 
 Each <Route> within a <Switch> is a new 'page' that will be served up based on the URL in the browser window (or links selected within the app). Between the <Route> tags, we can include content to show on the page.
 
-*This was already in the webpack config code taken from GitHub, but I think it's important to note that this line in the webpack.config.js makes sure that we can, in fact, visit "localhost:3000/about-us" and have it work. It forces the browser to head to index.html rather than trying to find the index file in an "about-us" folder.*
+_This was already in the webpack config code taken from GitHub, but I think it's important to note that this line in the webpack.config.js makes sure that we can, in fact, visit "localhost:3000/about-us" and have it work. It forces the browser to head to index.html rather than trying to find the index file in an "about-us" folder._
 
 ```javascript
-historyApiFallback: { index: "index.html" }
+historyApiFallback: {
+  index: "index.html";
+}
 ```
 
 ### Changing Links
@@ -226,8 +226,8 @@ Very simply, you could add the following in your component's function:
 
 ```javascript
 useEffect(() => {
-    document.title = "Terms & Conditions | ComplexApp";
-    window.scrollTo(0, 0);
+  document.title = "Terms & Conditions | ComplexApp";
+  window.scrollTo(0, 0);
 }, []);
 ```
 
@@ -250,11 +250,11 @@ We created a Container.js file to hold the following code:
 import React, { useEffect } from "react";
 
 function Container(props) {
-    return (
-        <>
-            <div className={"container py-md-5 " + (props.wide ? "" : "container--narrow")}>{props.children}</div>
-        </>
-    );
+  return (
+    <>
+      <div className={"container py-md-5 " + (props.wide ? "" : "container--narrow")}>{props.children}</div>
+    </>
+  );
 }
 
 export default Container;
@@ -273,11 +273,11 @@ import React, { useEffect } from "react";
 import Container from "./Container";
 
 function Page(props) {
-    useEffect(() => {
-        document.title = `${props.title} | ComplexApp`;
-        window.scrollTo(0, 0);
-    }, []);
-    return <Container wide={props.wide}>{props.children}</Container>;
+  useEffect(() => {
+    document.title = `${props.title} | ComplexApp`;
+    window.scrollTo(0, 0);
+  }, []);
+  return <Container wide={props.wide}>{props.children}</Container>;
 }
 
 export default Page;
@@ -311,13 +311,13 @@ And within our HomeGuest() function, we add this async function to handle the su
 
 ```javascript
 async function handleSubmit(e) {
-    e.preventDefault();
-    try {
-        await Axios.post("http://localhost:8080/register", { username: "Test", email: "test@test.com", password: "superlongpassword123" });
-        console.log("User was successfully created");
-    } catch (e) {
-        console.log("There was an error submitting the form.");
-    }
+  e.preventDefault();
+  try {
+    await Axios.post("http://localhost:8080/register", { username: "Test", email: "test@test.com", password: "superlongpassword123" });
+    console.log("User was successfully created");
+  } catch (e) {
+    console.log("There was an error submitting the form.");
+  }
 }
 ```
 
@@ -328,7 +328,7 @@ In Lesson 27, we get to the React part of dealing with a form (the above is all 
 First, we create three pieces of "state". We need to import {useState} into our file in order to use... state. :)
 
 ```javascript
-import React, {useState} from "react";
+import React, { useState } from "react";
 ```
 
 Then within our HomeGuest() function, we'll set up our variables that will "use state". The useState() function returns an array with two items: current value and a function we can call to update the value.
@@ -371,18 +371,18 @@ As with our signup form, we add onChange properties to each input in our form, a
 
 ```javascript
 async function handleSubmit(e) {
-    e.preventDefault();
-    try {
-        const response = await Axios.post("http://localhost:8080/login", { username, password });
+  e.preventDefault();
+  try {
+    const response = await Axios.post("http://localhost:8080/login", { username, password });
 
-        if (response.data) {
-            console.log(response.data);
-        } else {
-            console.log("Incorrect username/password");
-        }
-    } catch (e) {
-    console.log("There was an error logging in.");
+    if (response.data) {
+      console.log(response.data);
+    } else {
+      console.log("Incorrect username/password");
     }
+  } catch (e) {
+    console.log("There was an error logging in.");
+  }
 }
 ```
 
@@ -397,7 +397,9 @@ Within our Header.js, we add a condition to show HeaderLoggedIn or HeaderLoggedO
 ```jsx
 const [loggedIn, setLoggedIn] = useState();
 
-{loggedIn ? <HeaderLoggedIn setLoggedIn={setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={setLoggedIn} />}
+{
+  loggedIn ? <HeaderLoggedIn setLoggedIn={setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={setLoggedIn} />;
+}
 ```
 
 In our HeaderLoggedIn.js and HeaderLoggedOut.js, we need to make sure the main function has "props" passed to it.
@@ -547,14 +549,14 @@ So we create a new component, FlashMessages.js. We import it into Main.js. In Ma
 ```jsx
 const [flashMessages, setFlashMessages] = useState([]);
 
-<FlashMessages messages={flashMessages} />
+<FlashMessages messages={flashMessages} />;
 ```
 
 To add a new message to our FlashMessages component, we create a function in Main.js that adds a new message to the end of the previous array.
 
 ```javascript
 function addFlashMessage(msg) {
-    setFlashMessages(prev => prev.concat(msg));
+  setFlashMessages(prev => prev.concat(msg));
 }
 ```
 
@@ -576,5 +578,30 @@ But, we'll probably want to use this message in many components. And this is whe
 
 "An elegant way to pass/share data". Oooh, aaah.
 
+We create ExampleContext.js outside of the components folder.
 
+    import { createContext } from "react";
+    
+    const ExampleContext = createContext();
+    
+    export default ExampleContext;
 
+In Main.js, we import this new context file. Within the return for Main.js, we add the Context Provider (following tag) around our <BrowserRouter>
+
+    <ExampleContext.Provider value={addFlashMessage}></ExampleContext.Provider>
+
+The opening tag can contain a value property and any child component can access the value, no matter how many layers deep. We should remove "_addFlashMessage_={addFlashMessage}" from the <CreatePost> component.
+
+To leverage the value we added to the context, we need to import our ExampleContext into our CreatePost.js.
+
+```javascript
+import ExampleContext from "../ExampleContext";
+```
+
+Within our CreatePost(), we will add the context as a variable:
+
+```javascript
+const addFlashMessage = useContext(ExampleContext);
+```
+
+And within our handleSubmit, we can remove "props" from props.addFlashMessage().
