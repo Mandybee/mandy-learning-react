@@ -633,3 +633,23 @@ import ExampleContext from "../ExampleContext";
 const { setLoggedIn } = useContext(ExampleContext);
 ```
 
+## useReducer
+
+Sibling/cousin to useState. "It is usually preferable to useState when you have complex state logic that involves multiple sub-values or when the next state depends on the previous one."
+
+In the course, the instructor gives us this example reducer:
+
+```javascript
+function ourReducer(state, action) {
+    switch (action.type) {
+      case "login":
+        return { loggedIn: true, flashMessages: state.flashMessages };
+      case "logout":
+        return { loggedIn: false, flashMessages: state.flashMessages };
+      case "flashMessage":
+        return { loggedIn: state.loggedIn, flashMessages: state.flashMessages.concat(action.value) };
+    }
+}
+const [state, dispatch] = useReducer(ourReducer, initialState);
+```
+
