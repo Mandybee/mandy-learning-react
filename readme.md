@@ -635,7 +635,7 @@ const { setLoggedIn } = useContext(ExampleContext);
 
 ## useReducer
 
-Sibling/cousin to useState. "It is usually preferable to useState when you have complex state logic that involves multiple sub-values or when the next state depends on the previous one."
+Sibling/cousin to useState. "[UseReducer] is usually preferable to useState when you have complex state logic that involves multiple sub-values or when the next state depends on the previous one." [ReactJS Docs](https://reactjs.org/docs/hooks-reference.html#usereducer)
 
 In the course, the instructor gives us this example reducer:
 
@@ -653,3 +653,23 @@ function ourReducer(state, action) {
 const [state, dispatch] = useReducer(ourReducer, initialState);
 ```
 
+To start using ourReducer, we need to replace our ExampleContext with two separate contexts, one for our state and one for our dispatch. This will stop our app from getting too bogged down, since not all components will need to watch state or change state.
+
+```jsx
+<StateContext.Provider value={state}>
+<DispatchContext.Provider value={dispatch}>
+```
+
+Within our header components, we will need to import our DispatchContext and change the way we 'dispatch' actions.
+
+```javascript
+import DispatchContext from "../DispatchContext";
+```
+
+```javascript
+appDispatch({ type: "flashMessage", value: "Post successfully created!" });
+```
+
+```javascript
+appDispatch({ type: "logout" });
+```
