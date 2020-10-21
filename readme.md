@@ -576,9 +576,9 @@ But, we'll probably want to use this message in many components. And this is whe
 
 ## Context
 
-"An elegant way to pass/share data". Oooh, aaah. 
+"An elegant way to pass/share data". Oooh, aaah.
 
-This lesson was really difficult for me to wrap my head around (maybe because we only create something called an "ExampleContext"???), but I think I'm understanding a little better once I finally got through it all. Instead of passing states through our Main.js down to different components, we can use Contexts to pass around states instead. This is especially helpful when you have nested components, like  HeaderLoggedIn.js and HeaderLoggedOut.js within Header.js.
+This lesson was really difficult for me to wrap my head around (maybe because we only create something called an "ExampleContext"???), but I think I'm understanding a little better once I finally got through it all. Instead of passing states through our Main.js down to different components, we can use Contexts to pass around states instead. This is especially helpful when you have nested components, like HeaderLoggedIn.js and HeaderLoggedOut.js within Header.js.
 
 To create a Context, first we need to create a new file. We create ExampleContext.js outside of the components folder.
 
@@ -641,14 +641,14 @@ In the course, the instructor gives us this example reducer:
 
 ```javascript
 function ourReducer(state, action) {
-    switch (action.type) {
-      case "login":
-        return { loggedIn: true, flashMessages: state.flashMessages };
-      case "logout":
-        return { loggedIn: false, flashMessages: state.flashMessages };
-      case "flashMessage":
-        return { loggedIn: state.loggedIn, flashMessages: state.flashMessages.concat(action.value) };
-    }
+  switch (action.type) {
+    case "login":
+      return { loggedIn: true, flashMessages: state.flashMessages };
+    case "logout":
+      return { loggedIn: false, flashMessages: state.flashMessages };
+    case "flashMessage":
+      return { loggedIn: state.loggedIn, flashMessages: state.flashMessages.concat(action.value) };
+  }
 }
 const [state, dispatch] = useReducer(ourReducer, initialState);
 ```
@@ -673,3 +673,32 @@ appDispatch({ type: "flashMessage", value: "Post successfully created!" });
 ```javascript
 appDispatch({ type: "logout" });
 ```
+
+## Immer
+
+Because modifying state using useReducer can get clunky (because you have to pass through all states each time), we're going to replace useReducer with useImmerReducer.
+
+This allows us to simplify ourReducer:
+
+    function ourReducer(draft, action) {
+      switch (action.type) {
+        case "login":
+          draft.loggedIn = true;
+          break;
+        case "logout":
+          draft.loggedIn = false;
+          break;
+        case "flashMessage":
+          draft.flashMessages.push(action.value);
+          break;
+      }
+    }
+    const [state, dispatch] = useImmerReducer(ourReducer, initialState);
+
+To leverage Immer, install it:
+
+    npm immer use-immer
+
+And import it into Main.js:
+
+    import { useImmerReducer } from "use-immer";
