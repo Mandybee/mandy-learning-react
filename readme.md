@@ -702,3 +702,34 @@ To leverage Immer, install it:
 And import it into Main.js:
 
     import { useImmerReducer } from "use-immer";
+
+## Restructuring Our Login
+
+When a user logs in or out, we're using local storage to save information about them (the username, a token, and user image). When they log in, this is handled in the HeaderLoggedIn.js, when they log out, it's handled in the HeaderLoggedOut.js. This is messy and we want to update our app to do the lifting from within Main.js instead.
+
+In ourReducer in Main.js, we add: draft.user = action.data; to the "login" case. This adds a user state with the data passed through the DispatchContext.
+
+In HeaderLoggedIn and HeaderLoggedOut, we'll remove the localStorage settings. In HeaderLoggedOut.js, we add "data: response.data" to our appDispatch.
+
+    appDispatch({ type: "login", data: response.data });
+
+We want to keep our reducers "pure" and only include "reactish" things (or state), so we don't save our user data to local storage within ourReducer, we will useEffect and watch for changes to the loggedIn state to set localStorage instead.
+
+    useEffect(() => {
+      if (state.loggedIn) {
+        localStorage.setItem("complexappToken", state.user.token);
+        localStorage.setItem("complexappUsername", state.user.username);
+        localStorage.setItem("complexappAvatar", state.user.avatar);
+      } else {
+        localStorage.removeItem("complexappToken");
+        localStorage.removeItem("complexappUsername");
+        localStorage.removeItem("complexappAvatar");
+      }
+    }, [state.loggedIn]);
+
+In Home.js, we'll import the StateContext, create an "appState" const variable to use that context, and replace the username from localStorage to read from appState.
+
+    import StateContext from "../StateContext";
+    const appState = useContext(StateContext);
+
+    {appState.user.username}
