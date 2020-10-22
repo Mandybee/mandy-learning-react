@@ -705,7 +705,15 @@ And import it into Main.js:
 
 ## Restructuring Our Login
 
-When a user logs in or out, we're using local storage to save information about them (the username, a token, and user image). When they log in, this is handled in the HeaderLoggedIn.js, when they log out, it's handled in the HeaderLoggedOut.js. This is messy and we want to update our app to do the lifting from within Main.js instead.
+When a user logs in or out, we're using local storage to save information about them (the username, a token, and user image). When they log in, this is handled in the HeaderLoggedIn.js, when they log out, it's handled in the HeaderLoggedOut.js. This is messy and we want to update our app to do the lifting from within Main.js instead, so we'll use State to handle it!
+
+In Main.js, we'll add a user object to our initialState:
+
+    user: {
+      token: localStorage.getItem("complexappToken"),
+      username: localStorage.getItem("complexappUsername"),
+      avatar: localStorage.getItem("complexappAvatar")
+    }
 
 In ourReducer in Main.js, we add: draft.user = action.data; to the "login" case. This adds a user state with the data passed through the DispatchContext.
 
@@ -733,3 +741,11 @@ In Home.js, we'll import the StateContext, create an "appState" const variable t
     const appState = useContext(StateContext);
 
     {appState.user.username}
+
+## Pulling In Data from URL (useParams)
+
+We can get parameters from the URL using react-router-dom. For our Profile page, our URL will be something like, "/profile/mandybee".
+
+    import { useParams } from "react-router-dom";
+
+    const { username } = useParams();
