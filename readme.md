@@ -421,7 +421,10 @@ I have to say, all of this inline code has me screaming. lol My philosophy has a
 We'll be storing our login into local storage so that when we refresh the page, our logged in state is persistent.
 
 To store data, we use this:
+
+```
 localStorage.setItem("nameOfData", dataToBeStored)
+```
 
 In our HeaderLoggedOut.js, we stored these pieces:
 
@@ -680,20 +683,22 @@ Because modifying state using useReducer can get clunky (because you have to pas
 
 This allows us to simplify ourReducer:
 
-    function ourReducer(draft, action) {
-      switch (action.type) {
-        case "login":
-          draft.loggedIn = true;
-          break;
-        case "logout":
-          draft.loggedIn = false;
-          break;
-        case "flashMessage":
-          draft.flashMessages.push(action.value);
-          break;
-      }
-    }
-    const [state, dispatch] = useImmerReducer(ourReducer, initialState);
+```javascript
+function ourReducer(draft, action) {
+  switch (action.type) {
+    case "login":
+      draft.loggedIn = true;
+      break;
+    case "logout":
+      draft.loggedIn = false;
+      break;
+    case "flashMessage":
+      draft.flashMessages.push(action.value);
+      break;
+  }
+}
+const [state, dispatch] = useImmerReducer(ourReducer, initialState);
+```
 
 To leverage Immer, install it:
 
@@ -709,43 +714,79 @@ When a user logs in or out, we're using local storage to save information about 
 
 In Main.js, we'll add a user object to our initialState:
 
-    user: {
-      token: localStorage.getItem("complexappToken"),
-      username: localStorage.getItem("complexappUsername"),
-      avatar: localStorage.getItem("complexappAvatar")
-    }
+```javascript
+user: {
+  token: localStorage.getItem("complexappToken"),
+  username: localStorage.getItem("complexappUsername"),
+  avatar: localStorage.getItem("complexappAvatar")
+}
+```
 
 In ourReducer in Main.js, we add: draft.user = action.data; to the "login" case. This adds a user state with the data passed through the DispatchContext.
 
 In HeaderLoggedIn and HeaderLoggedOut, we'll remove the localStorage settings. In HeaderLoggedOut.js, we add "data: response.data" to our appDispatch.
 
-    appDispatch({ type: "login", data: response.data });
+```javascript
+appDispatch({ type: "login", data: response.data });
+```
 
 We want to keep our reducers "pure" and only include "reactish" things (or state), so we don't save our user data to local storage within ourReducer, we will useEffect and watch for changes to the loggedIn state to set localStorage instead.
 
-    useEffect(() => {
-      if (state.loggedIn) {
-        localStorage.setItem("complexappToken", state.user.token);
-        localStorage.setItem("complexappUsername", state.user.username);
-        localStorage.setItem("complexappAvatar", state.user.avatar);
-      } else {
-        localStorage.removeItem("complexappToken");
-        localStorage.removeItem("complexappUsername");
-        localStorage.removeItem("complexappAvatar");
-      }
-    }, [state.loggedIn]);
+```javascript
+useEffect(() => {
+  if (state.loggedIn) {
+    localStorage.setItem("complexappToken", state.user.token);
+    localStorage.setItem("complexappUsername", state.user.username);
+    localStorage.setItem("complexappAvatar", state.user.avatar);
+  } else {
+    localStorage.removeItem("complexappToken");
+    localStorage.removeItem("complexappUsername");
+    localStorage.removeItem("complexappAvatar");
+  }
+}, [state.loggedIn]);
+```
 
 In Home.js, we'll import the StateContext, create an "appState" const variable to use that context, and replace the username from localStorage to read from appState.
 
-    import StateContext from "../StateContext";
-    const appState = useContext(StateContext);
+```javascript
+import StateContext from "../StateContext";
+const appState = useContext(StateContext);
 
-    {appState.user.username}
+{appState.user.username}
+```
 
 ## Pulling In Data from URL (useParams)
 
-We can get parameters from the URL using react-router-dom. For our Profile page, our URL will be something like, "/profile/mandybee".
+We can get parameters from the URL using react-router-dom. For our Profile page, our URL will be something like, "/profile/mandybee". To grab "mandybee", use the useParams() function.
 
-    import { useParams } from "react-router-dom";
+```javascript
+import { useParams } from "react-router-dom";
 
-    const { username } = useParams();
+const { username } = useParams();
+```
+
+## State / useState
+
+To create a new state, you'll set it up as a new array that contains two things: the current status of the state, and a function that manipulates that state. The array equals "useState()" and you can pass the initial value of the state into the function. Some examples:
+
+```javascript
+const [isLoading, setIsLoading] = useState(true);
+const [posts, setPosts] = useState([]);
+const [title, setTitle] = useState();
+```
+
+To check the state, you can use the first part of the array. For example: 
+
+```jsx
+if (isLoading) return <div>Loading...</div>;
+```
+
+To alter the state, use the second part of the array:
+
+```javascript
+setPosts(response.data);
+setIsLoading(false);
+```
+
+You never want to manipulate the state directly (in my examples, that would be "isLoading", "posts", or "title"). Always use the function set up ("setIsLoading", "setPosts", "setTitle") and pass the new state through that.
+
