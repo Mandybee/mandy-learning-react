@@ -790,3 +790,14 @@ setIsLoading(false);
 
 You never want to manipulate the state directly (in my examples, that would be "isLoading", "posts", or "title"). Always use the function set up ("setIsLoading", "setPosts", "setTitle") and pass the new state through that.
 
+## useEffect
+
+useEffect takes two parameters: a function to run, and an array of dependencies to watch for changes. If the array is empty, it'll only run upon loading. This is an example
+
+```javascript
+useEffect(() => {
+    document.title = `${props.title} | ComplexApp`;
+    window.scrollTo(0, 0);
+  }, [props.title]);
+```
+
