@@ -812,3 +812,17 @@ import ReactMarkdown from "react-markdown";
      
 ```
 
+## React Tooltip
+
+Super easy tooltips:
+
+```jsx
+import ReactTooltip from "react-tooltip";
+
+<a href="#" data-tip="Edit" data-for="edit" className="text-primary mr-2">
+            <i className="fas fa-edit"></i>
+          </a>
+          <ReactTooltip id="edit" className="custom-tooltip" />{" "}
+          
+```
+
