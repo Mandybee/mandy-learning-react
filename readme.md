@@ -801,3 +801,14 @@ useEffect(() => {
   }, [props.title]);
 ```
 
+## Outputting Markdown Formatting
+
+We use the react-markdown package to easily allow our posts to use Markdown!
+
+```jsx
+import ReactMarkdown from "react-markdown";
+
+<ReactMarkdown source={post.body} allowedTypes={["paragraph", "strong", "emphasis", "text", "heading", "list", "listItem"]} />
+     
+```
+
