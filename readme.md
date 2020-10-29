@@ -677,6 +677,8 @@ appDispatch({ type: "flashMessage", value: "Post successfully created!" });
 appDispatch({ type: "logout" });
 ```
 
+It was noted later in the course that sending off a network request is considered a "side effect" and has nothing to do with React, so it should not be part of a reducer's code. The instructor suggests creating a useEffect to watch for a state change from a form, which is changed in the reducer.
+
 ## Immer
 
 Because modifying state using useReducer can get clunky (because you have to pass through all states each time), we're going to replace useReducer with useImmerReducer.
