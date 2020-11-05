@@ -828,3 +828,42 @@ import ReactTooltip from "react-tooltip";
           
 ```
 
+## React Transition Group
+
+This package allows us to easily use CSS transitions with our React components. We used this with our search overlay component.
+
+```
+npm install react-transition-group
+```
+
+In our Main.js, we use the <CSSTransition> tag to call our <Search /> component.
+
+```
+<CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
+	<Search />
+</CSSTransition>
+```
+
+The *timeout* attribute sets how many milliseconds the transition should be, this will match animations created in the CSS.
+
+The *in* attribute should be set to something that will be true or false, to determine when this element is added.
+
+The *classNames* attribute takes a class name. The classname will have "-enter", "-enter-active", "-exit" and "-exit-active" suffixes attached to it at different times. You can create styles to accompany them. 
+
+*className-enter*
+
+This is the class attached to the component when it initially loads.
+
+*className-enter-active*
+
+This is the class attached to the component directly after loading. Use this to add transitions/animations to the component.
+
+*className-exit*
+
+This class is attached to the component when "in" is set to false.
+
+*className-exit-active*
+
+This class is attached to the component right after -exit is attached. This is where transitions and animations would be added to the compnonent.
+
+After this, the component is unmounted if you include the *unmountOnExit* attribute on the <CSSTransition> tag.
